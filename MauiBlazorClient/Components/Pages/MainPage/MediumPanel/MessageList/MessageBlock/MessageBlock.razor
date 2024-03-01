@@ -1,0 +1,28 @@
+﻿
+
+<div class="message-block @(_isOwnMessage ? "own" : null)">
+    <div class="message">
+        @if (IsGroupChat && !_isOwnMessage)
+        {
+            <div class="message-title-username">
+                @Message?.User?.UserName
+            </div>
+        }
+        @Message?.Message
+        <span>@Message?.Timestamp.ToShortTimeString()</span>
+    </div>
+</div>
+
+
+@code {
+    [CascadingParameter(Name = "CurrentUser")]
+    public UserDTO? CurrentUser { get; set; }
+
+    [Parameter] public MessageDTO? Message { get; set; }
+    [Parameter] public bool IsGroupChat { get; set; }
+
+    private bool _isOwnMessage;
+
+    protected override void OnInitialized()
+        => _isOwnMessage = CurrentUser?.Id == Message?.User?.Id;
+}

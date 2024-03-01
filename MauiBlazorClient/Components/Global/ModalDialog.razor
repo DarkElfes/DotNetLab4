@@ -1,0 +1,37 @@
+﻿@inject IModalDialogService ModalDialogService;
+
+<div class="Modal" hidden="@_isHidden" tabindex="-1" role="dialog">
+    <div class="modal-container">
+        <div class="modal-backdrop" @onclick="Hide" />
+        <div class="modal-dialog" role="document">
+            <div class="title">@_title</div>
+            <div class="body">@_description</div>
+            <button class="btn" @onclick="@Hide">Ok</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string _title = "Title";
+    private string _description = "Description";
+
+    protected override void OnInitialized()
+        => ModalDialogService.OnShow += Show;
+
+    private bool _isHidden = true;
+
+    private void Hide()
+    {
+        _isHidden = true;
+    }
+
+    private void Show(string title, string description)
+    {
+        (_title, _description) = (title, description);
+        _isHidden = false;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+        => ModalDialogService.OnShow -= Show;
+}

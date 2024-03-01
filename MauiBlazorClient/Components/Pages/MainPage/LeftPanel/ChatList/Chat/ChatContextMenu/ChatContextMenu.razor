@@ -1,0 +1,32 @@
+﻿@using MauiBlazorClient.Services.ChatServices.GroupChatService
+@using MauiBlazorClient.Services.ChatServices.PersonalChatService
+
+@inject IGroupChatService GroupChatService;
+@inject IPersonalChatService PersonalChatService;
+
+<div>
+    @if (Chat is GroupChatDTO groupChat)
+    {
+        if (groupChat.OwnerUser == CurrentUser)
+        {
+            <button @onclick="async () => await GroupChatService.RemoveChatAsync(Chat.Id)">Remove Group</button>
+        }
+        else
+        {
+            <button @onclick="async () => await GroupChatService.LeaveGroupAsync(Chat.Id)">Leave Group</button>
+        }
+    }
+    else
+    {
+        <button @onclick="async () => await PersonalChatService.RemoveChatAsync(Chat.Id)">Remove Chat</button>
+    }
+</div>
+
+
+@code {
+    [CascadingParameter(Name = "CurrentUser")]
+    public UserDTO? CurrentUser { get; set; }
+
+    [Parameter]
+    public BaseChatDTO Chat { get; set; } = null!;
+}

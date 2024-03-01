@@ -1,0 +1,17 @@
+﻿@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.MessageList;
+@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.MessageInput;
+
+
+<div class="medium-panel">
+    @if (CurrentChat is not null)
+    {
+        <MessageList/>
+        <MessageInput/>
+    }
+</div>
+
+
+@code{
+    [CascadingParameter(Name = "CurrentChat")]
+    public BaseChatDTO? CurrentChat {get; set;}
+}

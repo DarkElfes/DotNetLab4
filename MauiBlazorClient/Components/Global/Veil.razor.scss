@@ -1,0 +1,48 @@
+﻿.veil {
+    position: absolute;
+    background: var(--main-color);
+    z-index: 2000;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    box-shadow: 0 0 200px 50px black inset;
+
+    &.show {
+        animation: show .5s ease-in forwards;
+
+        svg {
+            opacity: 0;
+            animation: emergence .4s ease-out .5s forwards;
+        }
+    }
+
+    &.hide {
+        animation: hide .5s ease-out forwards;
+    }
+}
+
+
+
+@keyframes hide {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-200vh);
+    }
+}
+
+@keyframes show {
+    0% {
+        transform: translateY(200vh);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}

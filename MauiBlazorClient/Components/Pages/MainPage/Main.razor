@@ -1,0 +1,48 @@
+﻿@page "/main";
+@attribute [Authorize];
+
+@using MauiBlazorClient.Components.Pages.MainPage.LeftPanel;
+@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel;
+
+@inject ChatManager ChatManager;
+@inject AuthenticationStateProvider AuthenticationStateProvider;
+
+<AuthorizeView>
+    <CascadingValue Value="@CurrentUser" Name="CurrentUser">
+        <CascadingValue Value="@CurrentChat" Name="CurrentChat">
+            <div class="content">
+                <LeftPanel />
+                <MediumPanel />
+            </div>
+        </CascadingValue>
+    </CascadingValue>
+</AuthorizeView>
+
+@code {
+    public BaseChatDTO? CurrentChat { get; set; }
+    public UserDTO? CurrentUser { get; set; }
+
+
+    protected override void OnInitialized()
+        => ChatManager.OnCurrentChatChanged += Update;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthenticationState state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        CurrentUser = new(
+            state.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Value,
+            state.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Name)).Value,
+            state.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email)).Value
+        );
+    }
+
+    public void Dispose()
+        => ChatManager.OnCurrentChatChanged -= Update;
+
+
+    void Update(BaseChatDTO? chat)
+    {
+        CurrentChat = chat;
+        StateHasChanged();
+    }
+}

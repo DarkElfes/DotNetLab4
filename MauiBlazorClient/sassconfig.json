@@ -1,0 +1,66 @@
+[
+  {
+    "outputFile": "wwwroot/css/app.css",
+    "inputFile": "wwwroot/css/app.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/LeftPanel/ChatList/Chat/Chat.razor.css",
+    "inputFile": "Components/Pages/MainPage/LeftPanel/ChatList/Chat/Chat.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/LeftPanel/ChatList/ChatList.razor.css",
+    "inputFile": "Components/Pages/MainPage/LeftPanel/ChatList/ChatList.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/LeftPanel/LeftPanel.razor.css",
+    "inputFile": "Components/Pages/MainPage/LeftPanel/LeftPanel.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/LeftPanel/UserInfo/UserInfo.razor.css",
+    "inputFile": "Components/Pages/MainPage/LeftPanel/UserInfo/UserInfo.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/Main.razor.css",
+    "inputFile": "Components/Pages/MainPage/Main.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/AuthPage/Auth.razor.css",
+    "inputFile": "Components/Pages/AuthPage/Auth.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/LeftPanel/ChatList/NewChatButton/NewChatButton.razor.css",
+    "inputFile": "Components/Pages/MainPage/LeftPanel/ChatList/NewChatButton/NewChatButton.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/MessageInput/MessageInput.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/MessageInput/MessageInput.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/MediumPanel.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/MediumPanel.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageBlock/MessageBlock.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageBlock/MessageBlock.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageList.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageList.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageList.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageList.razor.scss"
+  },
+  {
+    "outputFile": "Components/Loader/Loader.razor.css",
+    "inputFile": "Components/Loader/Loader.razor.scss"
+  },
+  {
+    "outputFile": "Components/Global/Veil.razor.css",
+    "inputFile": "Components/Global/Veil.razor.scss"
+  },
+  {
+    "outputFile": "Components/Global/Loader.razor.css",
+    "inputFile": "Components/Global/Loader.razor.scss"
+  }
+]

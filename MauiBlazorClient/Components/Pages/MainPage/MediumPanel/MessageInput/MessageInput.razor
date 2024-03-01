@@ -1,0 +1,17 @@
+﻿@inject ChatManager ChatManager;
+
+<input class="message-input" @bind-value="_message" @bind-value:event="oninput" @onkeydown="SendMessage" placeholder="Message" />
+
+@code {
+    private string _message = string.Empty;
+
+    async Task SendMessage(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_message))
+        {
+            await ChatManager.SendMessageAsync(new(_message, DateTime.UtcNow));
+
+            _message = string.Empty;
+        }
+    }
+}

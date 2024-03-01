@@ -1,0 +1,18 @@
+﻿@inject IAuthenticationService AuthenticationService;
+@inject IAnimatedNavigationManager Navigation;
+
+<AuthorizeView>
+    <div class="user-info">
+        <p>@context.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value</p>
+        <button class="btn" @onclick="Logout">Logout</button>
+    </div>
+</AuthorizeView>
+
+
+@code{
+    async Task Logout(){
+        AuthenticationService.Logout();
+        await Navigation.NavigateToAsync("/auth");
+    }
+}
+

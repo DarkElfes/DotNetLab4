@@ -1,0 +1,60 @@
+﻿.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 100vh;
+    background: var(--black-color);
+}
+
+::deep {
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20px;
+        background: black;
+        padding: 20px 40px;
+        color: white;
+        width: 400px;
+        opacity: 0;
+        animation: emergence 1s ease-out forwards;
+
+        .title {
+            font-size: 45px;
+            text-align: center;
+            font-family: ui-monospace;
+        }
+
+        input {
+            width: 100%;
+            color: white;
+            background: inherit;
+            border: 1px solid var(--main-color);
+            padding: 10px;
+            outline: none;
+
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active {
+                outline: none;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: #ffffff;
+                transition: background-color 5000s ease-in-out 0s;
+                box-shadow: inset 0 0 20px 20px #23232329;
+            }
+        }
+
+        button {
+            justify-self: end;
+        }
+
+        div.error-message {
+            text-align: center;
+            color: indianred;
+        }
+    }
+}

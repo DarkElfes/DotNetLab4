@@ -1,0 +1,11 @@
+﻿
+
+<div class="loader-container @(IsFullPage ? "full-page" : null)">
+    <span class="loader"/>
+</div>
+
+
+@code {
+    [Parameter]
+    public bool IsFullPage { get; set; }
+}

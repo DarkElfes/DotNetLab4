@@ -1,0 +1,59 @@
+﻿@using MauiBlazorClient.Components.Pages.MainPage.LeftPanel.ChatList.Chat;
+@using MauiBlazorClient.Components.Pages.MainPage.LeftPanel.ChatList.NewChatButton;
+@using MauiBlazorClient.Components.Global;
+@using MauiBlazorClient.Services.ChatServices.PersonalChatService
+
+@implements IAsyncDisposable;
+
+@inject IAuthenticationService AuthenticationService;
+@inject IAnimatedNavigationManager Navigation;
+@inject ChatManager ChatManager;
+
+
+<div class="chat-list">
+    @if (Chats?.Count > 0)
+    {
+        @foreach (BaseChatDTO chat in Chats)
+        {
+            <Chat CurrentChat="@chat" />
+        }
+    }
+    else if(Chats is not null)
+    {
+        <p>You not have any chat</p>
+    }
+    else
+    {
+        <Loader/>
+    }
+
+    <NewChatButton/>
+</div>
+
+
+@code {
+    private List<BaseChatDTO>? Chats;
+
+    protected override async Task OnInitializedAsync()
+    {
+        string? token = await AuthenticationService.GetTokenAsync();
+
+        if (string.IsNullOrWhiteSpace(token))
+            await Navigation.NavigateToAsync("/auth");
+
+        await ChatManager.ConnectAsync(token!);
+        ChatManager.OnChatsChanged += UpdateChats;
+    }
+
+    void UpdateChats(List<BaseChatDTO> chats)
+    {
+        Chats = chats;
+        StateHasChanged();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        ChatManager.OnChatsChanged -= UpdateChats;
+        await ChatManager.DisconnectAsync();
+    }
+}

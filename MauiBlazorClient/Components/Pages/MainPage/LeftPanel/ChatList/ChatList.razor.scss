@@ -1,0 +1,20 @@
+﻿.chat-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    btn.icon {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        right: 10px;
+        bottom: 10px;
+    }
+}

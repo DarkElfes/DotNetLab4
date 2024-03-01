@@ -1,0 +1,41 @@
+﻿@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.MessageList.MessageBlock;
+
+@inject IJSRuntime JS;
+@inject ChatManager ChatManager
+
+
+<div class="message-list @(_isEmergence ? "emergence" : null)" @ref="@messageList">
+    @if (CurrentChat is not null)
+    {
+        foreach (MessageDTO message in CurrentChat.Messages)
+        {
+            <MessageBlock Message="message" @key="message.Id" IsGroupChat="CurrentChat is GroupChatDTO" />
+        }
+    }
+</div>
+
+
+@code {
+    private ElementReference messageList;
+    private int _previousChatId;
+    private bool _isEmergence;
+
+    [CascadingParameter(Name = "CurrentChat")]
+    public BaseChatDTO? CurrentChat { get; set; }
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_previousChatId != (CurrentChat?.Id ?? 0))
+        {
+            _isEmergence = true;
+            await Task.Delay(300);
+            _isEmergence = false;
+
+            _previousChatId = CurrentChat.Id;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+        => await JS.InvokeVoidAsync("setOnBottom", messageList);
+}

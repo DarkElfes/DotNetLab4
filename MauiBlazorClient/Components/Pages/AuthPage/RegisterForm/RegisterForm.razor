@@ -1,0 +1,48 @@
+﻿@using static MauiBlazorClient.Components.Pages.AuthPage.Auth;
+
+@inject IAuthenticationService AuthenticationService;
+@inject IAnimatedNavigationManager Navigation;
+
+
+<EditForm Model="@_inputModel" FormName="Register" OnValidSubmit="@Submit" disabled="@SubmitState?.IsSubmitting">
+    <div class="title">Sign up</div>
+    <DataAnnotationsValidator />
+    <div>
+        <InputText @bind-Value="_inputModel.Name" placeholder="Name" />
+        <ValidationMessage For="() => _inputModel.Name" />
+    </div>
+    <div>
+        <InputText @bind-Value="_inputModel.Email" placeholder="Email" />
+        <ValidationMessage For="() => _inputModel.Email" />
+    </div>
+    <div>
+        <InputText @bind-Value="_inputModel.Password" placeholder="Password" />
+        <ValidationMessage For="() => _inputModel.Password" />
+    </div>
+    <button class="btn btn-primary" type="submit">Register</button>
+    <ErrorMessage Message="@_errorMessage"/>
+</EditForm>
+
+
+@code {
+    [CascadingParameter(Name = "SubmitState")]
+    public SubmitState? SubmitState { get; set; }
+
+    private RegisterRequest _inputModel = new();
+    private string? _errorMessage;
+
+
+    private async Task Submit()
+    {
+        SubmitState!.IsSubmitting = true;
+        _errorMessage = string.Empty;
+
+        _errorMessage = await AuthenticationService.RegisterAsync(_inputModel);
+
+        if (string.IsNullOrEmpty(_errorMessage))
+            await Navigation.NavigateToAsync("/main");
+
+        SubmitState!.IsSubmitting = false;
+    }
+
+}

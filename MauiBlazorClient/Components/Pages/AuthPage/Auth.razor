@@ -1,0 +1,90 @@
+﻿@page "/"
+@page "/auth"
+
+@using MauiBlazorClient.Components.Pages.AuthPage.LoginForm;
+@using MauiBlazorClient.Components.Pages.AuthPage.RegisterForm;
+
+@implements IDisposable;
+
+@inject AuthenticationStateProvider StateProvider;
+@inject IAnimatedNavigationManager Navigation;
+
+
+<div class="content">
+    @if (_isCheckAuthentication)
+    {
+        <Loader IsFullPage="true" />
+    }
+
+    <CascadingValue Name="SubmitState" Value="@_submitState">
+        <div>
+            @if (_isLogin)
+            {
+                <LoginForm />
+            }
+            else
+            {
+                <RegisterForm />
+            }
+        </div>
+
+        @if (!_submitState.IsSubmitting)
+        {
+            <button class="btn btn-primary" @onclick="() => _isLogin = !_isLogin">@(_isLogin ? "Register" : "Login")</button>
+        }
+        else
+        {
+            <Loader IsFullPage="true"/>
+        }
+
+    </CascadingValue>
+</div>
+
+
+@code {
+    private SubmitState _submitState = new();
+
+    private bool _isLogin = true;
+    private bool _isCheckAuthentication = true;
+
+    protected override void OnInitialized()
+        => _submitState.OnSubmitChanged += StateHasChanged;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        AuthenticationState state = await StateProvider.GetAuthenticationStateAsync();
+
+        if (state.User?.Identity?.IsAuthenticated ?? false)
+        {
+            long expTimeUnix = long.Parse(state.User?.Claims.FirstOrDefault(c => c.Type.Equals("exp"))?.Value ?? "0");
+
+            if (DateTime.UtcNow < DateTimeOffset.FromUnixTimeSeconds(expTimeUnix))
+                await Navigation.NavigateToAsync("/main");
+        }
+
+        _isCheckAuthentication = false;
+    }
+
+    public void Dispose()
+        => _submitState.OnSubmitChanged -= StateHasChanged;
+
+
+
+    public class SubmitState
+    {
+        private bool _isSubmitting;
+
+        public bool IsSubmitting
+        {
+            get => _isSubmitting;
+            set
+            {
+                _isSubmitting = value;
+                OnSubmitChanged?.Invoke();
+            }
+        }
+
+        public event Action? OnSubmitChanged;
+    }
+}

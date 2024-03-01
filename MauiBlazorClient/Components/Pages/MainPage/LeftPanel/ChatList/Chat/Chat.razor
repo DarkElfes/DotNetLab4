@@ -1,0 +1,52 @@
+﻿@using MauiBlazorClient.Components.Pages.MainPage.LeftPanel.ChatList.Chat.ChatContextMenu;
+
+@inject ChatManager ChatManager;
+
+
+<div class="chat @(ChatManager.CurrentChat == CurrentChat ? "current" : "" )"
+     @onclick="OpenChat"
+     @oncontextmenu="() =>{ _isContextMenuDisplayed = true;}">
+
+    <img src="images/chat-icon.jfif" />
+
+    <div>
+        <div>
+            @if (CurrentChat is PersonalChatDTO personalChat)
+            {
+                @personalChat.Users.FirstOrDefault(u => u.Id != CurrentUser?.Id)?.UserName;
+            }
+            else if (CurrentChat is GroupChatDTO groupChat)
+            {
+                @groupChat.Name;
+            }
+        </div>
+
+        @if (_lastMessage is not null)
+        {
+            <div> @(_lastMessage!.User?.Id != CurrentUser?.Id ? _lastMessage!.User?.UserName + ":" : null) @_lastMessage!.Message </div>
+        }
+    </div>
+
+
+    @if (_isContextMenuDisplayed)
+    {
+        <ChatContextMenu Chat="CurrentChat"/>
+    }
+</div>
+
+@code {
+    [CascadingParameter(Name = "CurrentUser")]
+    public UserDTO? CurrentUser { get; set; }
+
+    [Parameter]
+    public BaseChatDTO CurrentChat { get; set; } = null!;
+
+    private MessageDTO? _lastMessage;
+    private bool _isContextMenuDisplayed;
+
+    protected override void OnParametersSet()
+        => _lastMessage = CurrentChat.Messages.LastOrDefault();
+
+    void OpenChat()
+    => ChatManager.OpenChat(CurrentChat);
+}
