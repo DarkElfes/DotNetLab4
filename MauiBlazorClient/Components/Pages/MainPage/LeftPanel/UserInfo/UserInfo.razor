@@ -4,15 +4,16 @@
 <AuthorizeView>
     <div class="user-info">
         <p>@context.User?.Claims?.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value</p>
-        <button class="btn" @onclick="Logout">Logout</button>
+        <button @onclick="LogoutAsync">Logout</button>
     </div>
 </AuthorizeView>
 
 
 @code{
-    async Task Logout(){
+    async Task LogoutAsync(){
         AuthenticationService.Logout();
         await Navigation.NavigateToAsync("/auth");
     }
 }
+
 

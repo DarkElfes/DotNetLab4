@@ -1,10 +1,12 @@
 ﻿global using MauiBlazorClient.Services;
 global using MauiBlazorClient.Services.IServices;
-using MauiBlazorClient.Services.ChatServices.GroupChatService;
-using MauiBlazorClient.Services.ChatServices.PersonalChatService;
+using MauiBlazorClient.Services.ChatServices;
+using MauiBlazorClient.Services.ChatServices.IChatServices;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.UI.Xaml.Controls;
 using System.Reflection;
 
 namespace MauiBlazorClient
@@ -30,6 +32,7 @@ namespace MauiBlazorClient
 
             builder.Configuration.AddConfiguration(config);
 
+            builder.Services.AddScoped<IAnimatedNavigationManager, AnimatedNavigationManager>();
 
             builder.Services.AddMauiBlazorWebView();
 
@@ -45,7 +48,7 @@ namespace MauiBlazorClient
                     ?? throw new ArgumentException("Not set server url"));
             });
 
-            builder.Services.AddScoped<IAnimatedNavigationManager, AnimatedNavigationManager>();
+
             builder.Services.AddScoped<IModalDialogService, ModalDialogService>();
 
             builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
@@ -57,7 +60,7 @@ namespace MauiBlazorClient
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

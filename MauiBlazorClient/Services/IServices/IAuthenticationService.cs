@@ -2,7 +2,7 @@
 
 namespace MauiBlazorClient.Services.IServices;
 
-internal interface IAuthenticationService
+public interface IAuthenticationService
 {
     event Action OnLoggedOut;
 
@@ -11,5 +11,4 @@ internal interface IAuthenticationService
     void Logout();
 
     ValueTask<string?> GetTokenAsync();
-
 }

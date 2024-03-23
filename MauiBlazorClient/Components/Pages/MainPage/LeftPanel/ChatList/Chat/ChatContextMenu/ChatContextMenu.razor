@@ -1,7 +1,4 @@
-﻿@using MauiBlazorClient.Services.ChatServices.GroupChatService
-@using MauiBlazorClient.Services.ChatServices.PersonalChatService
-
-@inject IGroupChatService GroupChatService;
+﻿@inject IGroupChatService GroupChatService;
 @inject IPersonalChatService PersonalChatService;
 
 <div>
@@ -13,7 +10,7 @@
         }
         else
         {
-            <button @onclick="async () => await GroupChatService.LeaveGroupAsync(Chat.Id)">Leave Group</button>
+            <button @onclick="async () => await GroupChatService.LeaveFromChatAsync(Chat.Id)">Leave Group</button>
         }
     }
     else

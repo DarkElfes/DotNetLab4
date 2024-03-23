@@ -1,61 +1,49 @@
-﻿.chat {
-    display: flex;
-    padding: 5px;
-    align-items: center;
-    gap: 10px;
-    align-self: stretch;
-    border-radius: 10px;
-    transition: all 500ms ease-out;
-    padding-right: 10px;
-    animation: emergence .5s ease-out forwards;
+﻿@import '../../../../../../wwwroot/styles/utils/_colors.scss';
+@import '../../../../../../wwwroot/styles/utils/_mixins.scss';
+@import '../../../../../../wwwroot/styles/utils/_radius.scss';
+@import '../../../../../../wwwroot/styles/utils/_spacing.scss';
 
-    &.current {
-        background: var(--main-color);
+.chat {
+    display: flex;
+    align-items: center;
+    gap: $sm;
+    padding: $xs2;
+    border-radius: $radius-10;
+    transition: all 500ms ease-out;
+    animation: emergence .5s ease-out forwards;
+    -webkit-user-select: none;
+    user-select: none;
+
+    > img {
+        border-radius: $radius-round;
+        width: 60px;
+        height: 60px;
+        flex-grow: 0;
+    }
+
+    > div {
+        overflow: hidden;
+        gap: $xs2;
+        flex: 1 0 0;
+
 
         div:last-child {
-            color: var(--white-color);
+            @include secondary;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    &.current {
+        background: $primary;
+
+        div:last-child {
+            color: $white;
         }
     }
 
     &:not(.current):hover {
-        background: var(--black-color);
-    }
-
-    img {
-        border-radius: 50px;
-        width: 60px;
-        height: 60px;
-    }
-
-    > div {
-        display: flex;
-        height: 44px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        flex: 1 0 0;
-
-        div {
-            white-space: nowrap;
-
-            &:first-child {
-                font-weight: 700;
-            }
-
-            &:last-child {
-                font-weight: 200;
-                color: #808080;
-                overflow-wrap: unset;
-            }
-        }
-    }
-
-    @keyframes emergence{
-        from{
-            opacity: 0;
-        }
-        to{
-            opacity: 1;
-        }
+        background: $black;
     }
 }

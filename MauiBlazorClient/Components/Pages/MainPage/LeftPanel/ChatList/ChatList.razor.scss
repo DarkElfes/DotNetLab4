@@ -1,9 +1,9 @@
 ﻿.chat-list {
     display: flex;
+    align-self:stretch;
+    align-items: stretch;
     flex-direction: column;
-    align-items: flex-start;
     flex: 1 0 0;
-    align-self: stretch;
     overflow: auto;
 
     &::-webkit-scrollbar {

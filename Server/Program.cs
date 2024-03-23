@@ -94,7 +94,7 @@ builder.Services.AddScoped<IRepository<GroupChat>, ChatRepository<GroupChat>>();
 builder.Services.AddScoped<IRepository<ChatMessage>, MessageRepository>();
 
 builder.Services.AddScoped<IChatService<PersonalChatRequest>, PersonalChatService>();
-builder.Services.AddScoped<IChatService<GroupChatRequest>, GroupChatService>();
+builder.Services.AddScoped<IGroupChatService, GroupChatService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 
 builder.Services.AddScoped<UserHelper>();

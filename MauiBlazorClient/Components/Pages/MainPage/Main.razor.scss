@@ -1,7 +1,10 @@
-﻿.content{
-    display: flex;
+﻿@import '../../../wwwroot/styles/utils/_colors.scss';
+
+.content{
+    display:flex;
+    flex-direction: row;
+    align-items: stretch;
     width: 100vw;
     height: 100vh;
-    align-items: stretch;
-    background: var(--black-color);
+    background: $black;
 }

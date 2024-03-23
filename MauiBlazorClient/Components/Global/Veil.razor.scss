@@ -1,6 +1,9 @@
-﻿.veil {
+﻿@import '../../wwwroot/styles/utils/_colors.scss';
+@import '../../wwwroot/styles/utils/_mixins.scss';
+
+.veil {
     position: absolute;
-    background: var(--main-color);
+    background: $primary;
     z-index: 2000;
     overflow: hidden;
     display: flex;
@@ -9,7 +12,7 @@
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    box-shadow: 0 0 200px 50px black inset;
+    box-shadow: 0 0 200px 50px $black inset;
 
     &.show {
         animation: show .5s ease-in forwards;

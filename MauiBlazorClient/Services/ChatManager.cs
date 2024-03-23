@@ -1,6 +1,4 @@
-﻿using MauiBlazorClient.Services.ChatServices;
-using MauiBlazorClient.Services.ChatServices.GroupChatService;
-using MauiBlazorClient.Services.ChatServices.PersonalChatService;
+﻿using MauiBlazorClient.Services.ChatServices.IChatServices;
 using Shared.DTOs.Request.Chat;
 using Shared.DTOs.Response.ChatsDTO;
 

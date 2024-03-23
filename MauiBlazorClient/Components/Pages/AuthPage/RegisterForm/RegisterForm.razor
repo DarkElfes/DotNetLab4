@@ -4,7 +4,7 @@
 @inject IAnimatedNavigationManager Navigation;
 
 
-<EditForm Model="@_inputModel" FormName="Register" OnValidSubmit="@Submit" disabled="@SubmitState?.IsSubmitting">
+<EditForm Model="@_inputModel" FormName="Register" OnValidSubmit="@Submit" disabled="@AuthState?.IsSubmitting">
     <div class="title">Sign up</div>
     <DataAnnotationsValidator />
     <div>
@@ -19,14 +19,18 @@
         <InputText @bind-Value="_inputModel.Password" placeholder="Password" />
         <ValidationMessage For="() => _inputModel.Password" />
     </div>
-    <button class="btn btn-primary" type="submit">Register</button>
-    <ErrorMessage Message="@_errorMessage"/>
+
+    <div class="manager">
+        <Button OnClick="_ => AuthState.IsLogin = true">Have account</Button>
+        <Button type="submit">Register</Button>
+    </div>
+    <ErrorMessage Message="@_errorMessage" />
 </EditForm>
 
 
 @code {
-    [CascadingParameter(Name = "SubmitState")]
-    public SubmitState? SubmitState { get; set; }
+    [CascadingParameter(Name = "AuthState")]
+    public AuthState? AuthState { get; set; }
 
     private RegisterRequest _inputModel = new();
     private string? _errorMessage;
@@ -34,7 +38,7 @@
 
     private async Task Submit()
     {
-        SubmitState!.IsSubmitting = true;
+        AuthState!.IsSubmitting = true;
         _errorMessage = string.Empty;
 
         _errorMessage = await AuthenticationService.RegisterAsync(_inputModel);
@@ -42,7 +46,7 @@
         if (string.IsNullOrEmpty(_errorMessage))
             await Navigation.NavigateToAsync("/main");
 
-        SubmitState!.IsSubmitting = false;
+        AuthState!.IsSubmitting = false;
     }
 
 }

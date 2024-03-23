@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components.Routing;
 
 namespace MauiBlazorClient.Services;
 
-public class AnimatedNavigationManager : IAnimatedNavigationManager, IDisposable
+public class AnimatedNavigationManager: IAnimatedNavigationManager, IDisposable
 {
     private readonly NavigationManager _navigation;
 
@@ -11,9 +11,9 @@ public class AnimatedNavigationManager : IAnimatedNavigationManager, IDisposable
     public event Action? OnAfterNavigation;
 
 
-    public AnimatedNavigationManager(NavigationManager navigation)
+    public AnimatedNavigationManager(IServiceProvider serviceProvider)
     {
-        _navigation = navigation;
+        _navigation = serviceProvider.GetRequiredService<NavigationManager>();
         _navigation.LocationChanged += HandleLocationChanged;
     }
 
@@ -24,9 +24,10 @@ public class AnimatedNavigationManager : IAnimatedNavigationManager, IDisposable
 
         _navigation.NavigateTo(uri, forceload);
     }
-    public void Dispose()
-        => _navigation.LocationChanged -= HandleLocationChanged;
 
     private void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
         => OnAfterNavigation?.Invoke();
+
+    public void Dispose()
+        => _navigation.LocationChanged -= HandleLocationChanged;
 }

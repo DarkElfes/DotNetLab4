@@ -7,17 +7,19 @@
      @onclick="OpenChat"
      @oncontextmenu="() =>{ _isContextMenuDisplayed = true;}">
 
-    <img src="images/chat-icon.jfif" />
+    <img src="images/chat-icon.jfif" alt="chat-icon"/>
 
     <div>
         <div>
             @if (CurrentChat is PersonalChatDTO personalChat)
             {
-                @personalChat.Users.FirstOrDefault(u => u.Id != CurrentUser?.Id)?.UserName;
+                @personalChat.Users.FirstOrDefault(u => u.Id != CurrentUser?.Id)?.UserName
+                ;
             }
             else if (CurrentChat is GroupChatDTO groupChat)
             {
-                @groupChat.Name;
+                @groupChat.Name
+                ;
             }
         </div>
 

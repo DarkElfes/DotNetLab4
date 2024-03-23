@@ -1,0 +1,54 @@
+﻿@import '../utils/_colors.scss';
+@import '../utils/_mixins.scss';
+
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    @include medium;
+    color: $white;
+    scroll-behavior: smooth;
+}
+
+.page {
+    position: relative;
+    overflow: hidden;
+}
+
+
+*:hover
+*:-webkit-autofill:hover {
+    @include hovered;
+}
+
+*:focus,
+*:-webkit-autofill:focus {
+    @include focused;
+}
+
+*:disabled,
+*:-webkit-autofill:disabled {
+    @include disabled;
+}
+
+
+.emergence {
+    animation: emergence .3s ease-in-out forwards;
+}
+
+
+@keyframes emergence {
+    from {
+        opacity: 0;
+        transform: translateY(-150px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

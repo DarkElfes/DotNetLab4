@@ -1,11 +1,11 @@
-﻿
+﻿@import '../../../../../wwwroot/styles/styles.scss';
+
 .message-input {
     border: none;
     width: 100%;
     outline: none !important;
-    color: var(--white-clolor);
-    padding: 15px 15px;
-    font-size: 18px;
-    border-radius: 10px;
-    background: #0F0F0F;
+    color: $white;
+    padding: $lg;
+    border-radius: $radius-10;
+    background: $dark;
 }

@@ -4,25 +4,31 @@
 @inject IAnimatedNavigationManager Navigation;
 
 
-<EditForm Model="@_inputModel" FormName="Login" OnValidSubmit="@Submit" disabled="@SubmitState?.IsSubmitting">
+<EditForm Model="@_inputModel" FormName="Login" OnValidSubmit="@Submit" disabled="@AuthState?.IsSubmitting">
     <div class="title">Sign in</div>
+
     <DataAnnotationsValidator />
+
     <div>
-        <InputText  @bind-Value="_inputModel.Email" placeholder="Email" type="" />
+        <InputText @bind-Value="_inputModel.Email" placeholder="Email" type="" />
         <ValidationMessage For="() => _inputModel.Email" />
     </div>
     <div>
         <InputText @bind-Value="_inputModel.Password" placeholder="Password" />
         <ValidationMessage For="() => _inputModel.Password" />
     </div>
-    <button class="btn btn-primary" type="submit">Login</button>
-    <ErrorMessage Message="@_errorMessage"/>
+
+    <div class="manager">
+        <Button OnClick="_ => AuthState.IsLogin = false">Not have account</Button>
+        <Button Type="submit">Login</Button>
+    </div>
+    <ErrorMessage Message="@_errorMessage" />
 </EditForm>
 
 
 @code {
-    [CascadingParameter(Name = "SubmitState")]
-    public SubmitState? SubmitState { get; set; }
+    [CascadingParameter(Name = "AuthState")]
+    public AuthState? AuthState { get; set; }
 
     private LoginRequest _inputModel = new();
     private string? _errorMessage;
@@ -30,7 +36,7 @@
 
     private async Task Submit()
     {
-        SubmitState!.IsSubmitting = true;
+        AuthState!.IsSubmitting = true;
         _errorMessage = string.Empty;
 
         _errorMessage = await AuthenticationService.LoginAsync(_inputModel);
@@ -38,6 +44,6 @@
         if (string.IsNullOrEmpty(_errorMessage))
             await Navigation.NavigateToAsync("/main");
 
-        SubmitState!.IsSubmitting = false;
+        AuthState!.IsSubmitting = false;
     }
 }

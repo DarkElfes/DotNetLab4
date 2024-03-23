@@ -62,5 +62,17 @@
   {
     "outputFile": "Components/Global/Loader.razor.css",
     "inputFile": "Components/Global/Loader.razor.scss"
+  },
+  {
+    "outputFile": "Components/Global/ErrorMessage.razor.css",
+    "inputFile": "Components/Global/ErrorMessage.razor.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/styles.css",
+    "inputFile": "wwwroot/styles/styles.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/Main.razor.css",
+    "inputFile": "Components/Pages/MainPage/Main.razor.scss"
   }
 ]

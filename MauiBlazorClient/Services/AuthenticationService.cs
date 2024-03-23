@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using MauiBlazorClient.Services.IServices;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 using Shared.DTOs.Request.Auth;
@@ -20,6 +21,7 @@ public record AuthenticationService(
         => await AuthResponseHandler(await GetApiClient().PostAsJsonAsync("auth/login", loginRequest));
     public async Task<string?> RegisterAsync(RegisterRequest registerRequest)
         => await AuthResponseHandler(await GetApiClient().PostAsJsonAsync("auth/register", registerRequest));
+
     public void Logout()
     {
         SecureStorage.Default.Remove("jwt_token");
@@ -30,9 +32,8 @@ public record AuthenticationService(
 
     public async ValueTask<string?> GetTokenAsync()
     {
-        string? token;
 
-        if (_memoryCached.TryGetValue("cached_jwt_token", out token) && !string.IsNullOrWhiteSpace(token))
+        if (_memoryCached.TryGetValue("cached_jwt_token", out string? token) && !string.IsNullOrWhiteSpace(token))
             return token;
         else
             token = await SecureStorage.GetAsync("jwt_token");

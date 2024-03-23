@@ -1,0 +1,50 @@
+﻿<button class="@(_isClicked ? "clicked" : null)"
+        type="@_type"
+        @onclick="OnClickHandler">
+
+    @if (_isClicked)
+    {
+        <div class="ellipse"></div>
+    }
+
+    @ChildContent
+
+</button>
+
+
+
+@code
+{
+    private string _type = "button";
+    private bool _isClicked;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    [Parameter]
+    public string Type
+    {
+        get => _type;
+        set
+        {
+            if (value.Equals("submit") || value.Equals("reset") || value.Equals("button"))
+                _type = value;
+            else
+                throw new ArgumentException($"Invalid button type: {value}. Valid values are 'submit', 'reset', or 'button'.");
+        }
+    }
+
+
+    async Task OnClickHandler(MouseEventArgs e)
+    {
+        _isClicked = true;
+        await Task.Delay(200);
+        _isClicked = false;
+
+        await OnClick.InvokeAsync(e);
+    }
+}
+

@@ -1,7 +1,7 @@
 ﻿using Shared.DTOs.Request.Chat;
 using Shared.DTOs.Response.ChatsDTO;
 
-namespace MauiBlazorClient.Services.ChatServices;
+namespace MauiBlazorClient.Services.ChatServices.IChatServices;
 
 public interface IBaseChatService
 {
@@ -12,5 +12,6 @@ public interface IBaseChatService
     Task ConnectAsync(string token);
     Task DisconnectAsync();
 
+    Task RemoveChatAsync(int chatId);
     Task SendMessageAsync(MessageRequest messageRequest);
 }

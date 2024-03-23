@@ -1,0 +1,46 @@
+﻿@import '_colors.scss';
+
+
+//Fonts
+@mixin userName {
+    font-family: KiwiMaru;
+    font-size: 24px;
+    font-weight: 500;
+}
+@mixin large {
+    font-family: Lato;
+    font-size: 24px;
+}
+@mixin medium {
+    font-family: Lato;
+    font-size: 16px;
+}
+@mixin small {
+    font-family: Lato;
+    font-size: 14px;
+}
+@mixin secondary {
+    font-family: Lato;
+    font-size: 14px;
+    font-weight: 300;
+    font-style: italic;
+    color: $gray;
+}
+
+
+//States
+
+@mixin hovered {
+    box-shadow: 0 0 8px 0 $primary;
+}
+@mixin focused{
+    @include hovered;
+    border-color: $primary;
+    outline: none;
+}
+@mixin disabled {
+    background: $gray;
+    color: $dark;
+}
+
+

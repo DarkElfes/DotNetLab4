@@ -11,14 +11,9 @@
 
 
 <div class="content">
-    @if (_isCheckAuthentication)
-    {
-        <Loader IsFullPage="true" />
-    }
-
-    <CascadingValue Name="SubmitState" Value="@_submitState">
+    <CascadingValue Name="AuthState" Value="@_authState">
         <div>
-            @if (_isLogin)
+            @if (_authState.IsLogin)
             {
                 <LoginForm />
             }
@@ -27,28 +22,22 @@
                 <RegisterForm />
             }
         </div>
-
-        @if (!_submitState.IsSubmitting)
-        {
-            <button class="btn btn-primary" @onclick="() => _isLogin = !_isLogin">@(_isLogin ? "Register" : "Login")</button>
-        }
-        else
-        {
-            <Loader IsFullPage="true"/>
-        }
-
     </CascadingValue>
+
+    @if (_authState.IsSubmitting || _isCheckAuthentication)
+    {
+        <Loader IsFullPage="true" />
+    }
 </div>
 
 
 @code {
-    private SubmitState _submitState = new();
+    private readonly AuthState _authState = new();
 
-    private bool _isLogin = true;
     private bool _isCheckAuthentication = true;
 
     protected override void OnInitialized()
-        => _submitState.OnSubmitChanged += StateHasChanged;
+        => _authState.AuthStateChanged += StateHasChanged;
 
 
     protected override async Task OnInitializedAsync()
@@ -67,13 +56,14 @@
     }
 
     public void Dispose()
-        => _submitState.OnSubmitChanged -= StateHasChanged;
+        => _authState.AuthStateChanged -= StateHasChanged;
 
 
 
-    public class SubmitState
+    public class AuthState
     {
         private bool _isSubmitting;
+        private bool _isLogin = true;
 
         public bool IsSubmitting
         {
@@ -81,10 +71,20 @@
             set
             {
                 _isSubmitting = value;
-                OnSubmitChanged?.Invoke();
+                AuthStateChanged?.Invoke();
             }
         }
 
-        public event Action? OnSubmitChanged;
+        public bool IsLogin
+        {
+            get => _isLogin;
+            set
+            {
+                _isLogin = value;
+                AuthStateChanged?.Invoke();
+            }
+        }
+
+        public event Action? AuthStateChanged;
     }
 }

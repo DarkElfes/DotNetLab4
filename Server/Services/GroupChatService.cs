@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Server.Models;
 using Server.Models.Chats;
 using Server.Repositories.IRepositories;
@@ -10,7 +11,8 @@ namespace Server.Services;
 
 public record GroupChatService(
     IRepository<GroupChat> _groupChatRepo,
-    IMapper _mapper
+    IMapper _mapper,
+    UserManager<ApplicationUser> _userManager
     ) : IGroupChatService
 {
     public async Task<BaseChatDTO?> GetChatByIdAsync(int chatId)
@@ -44,12 +46,49 @@ public record GroupChatService(
     public async Task<bool> RemoveChatAsync(int chatId)
         => await _groupChatRepo.DeleteAsync(chatId);
 
-    public async Task<bool> AddUserToGroup(int chatId, ApplicationUser user)
+
+    public async Task<BaseChatDTO> LeaveFromChat(int chatId, string userId)
     {
-        throw new NotImplementedException();
+        if (await _groupChatRepo.GetByIdAsync(chatId) is GroupChat chat &&
+            await _userManager.FindByIdAsync(userId) is ApplicationUser user)
+        {
+            if (!chat.Users.Remove(user))
+                throw new ArgumentException("Current user is not in this chat");
+
+            return _mapper.Map<BaseChatDTO>(await _groupChatRepo.UpdateAsync(chat));
+        }
+
+        throw new ArgumentNullException("User or chat not exist");
     }
-    public async Task<bool> RemoveUserFromGroup(int chatId, ApplicationUser user)
+    public async Task<BaseChatDTO> AddUserToChat(int chatId, string ownerId, string userId)
     {
-        throw new NotImplementedException();
+        if(await _groupChatRepo.GetByIdAsync(chatId) is GroupChat chat &&
+            await _userManager.FindByIdAsync(userId) is ApplicationUser user)
+        {
+            if (!ownerId.Equals(chat.Owner.Id))
+                throw new ArgumentException("You don't have permission");
+
+            chat.Users.Add(user);
+
+            return _mapper.Map<BaseChatDTO>(await _groupChatRepo.UpdateAsync(chat));
+        }
+
+        throw new ArgumentNullException("User or chat not exist");
+    }
+    public async Task<BaseChatDTO> RemoveUserFromChat(int chatId, string ownerId, string userId)
+    {
+        if (await _groupChatRepo.GetByIdAsync(chatId) is GroupChat chat &&
+           await _userManager.FindByIdAsync(userId) is ApplicationUser user)
+        {
+            if (!ownerId.Equals(chat.Owner.Id))
+                throw new ArgumentException("You don't have permission");
+
+            if (!chat.Users.Remove(user))
+                throw new ArgumentException("Current user is not in this chat");
+
+            return _mapper.Map<BaseChatDTO>(await _groupChatRepo.UpdateAsync(chat));
+        }
+
+        throw new ArgumentNullException("User or chat not exist");
     }
 }

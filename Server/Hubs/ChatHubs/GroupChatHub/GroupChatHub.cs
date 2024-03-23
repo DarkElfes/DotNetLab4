@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Server.Helpers;
+using Server.Models;
 using Server.Services.IServices;
 using Shared.DTOs.Request.Chat;
 using Shared.DTOs.Response;
@@ -11,12 +12,12 @@ namespace Server.Hubs.ChatHubs.GroupChatHub;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class GroupChatHub(
-    IChatService<GroupChatRequest> _chatService,
+    IGroupChatService _chatService,
     IMessageService chatMessageService,
     UserHelper userHelper
     ) : Hub<IGroupChatClient>
 {
-    private readonly IChatService<GroupChatRequest> _chatService = _chatService;
+    private readonly IGroupChatService _chatService = _chatService;
     private readonly IMessageService _chatMessageService = chatMessageService;
     private readonly UserHelper _userHelper = userHelper;
 
@@ -31,6 +32,14 @@ public class GroupChatHub(
         BaseChatDTO newChat = await _chatService.CreateChatAsync(chatRequest, await _userHelper.GetCurrentUserAsync(Context?.User));
         await Clients.Caller.ReceiveChat(newChat);
     }
+    public async Task RemoveChatAsync(int chatId)
+    {
+        if (await _chatService.RemoveChatAsync(chatId))
+            await Clients.Caller.ReceiveRemovedChatId(chatId);
+        else
+            await Clients.Caller.ReceiveErrorMessage("Failed to delete this chat.");
+    }
+
     public async Task SendMessageAsync(MessageRequest messageRequest)
     {
         MessageDTO messageDTO = await _chatMessageService.CreateMessageAsync(messageRequest, await _userHelper.GetCurrentUserAsync(Context?.User));
@@ -38,20 +47,32 @@ public class GroupChatHub(
         foreach (UserDTO user in messageDTO!.Chat!.Users)
             await Clients.User(user.Id).ReceiveMessage(messageDTO);
     }
-    public async Task RemoveChatAsync(int chatId)
+
+
+    public async Task LeaveFromChatAsync(int chatId)
+    {
+        ApplicationUser currentUser = await _userHelper.GetCurrentUserAsync(Context?.User);
+
+        try
+        {
+            BaseChatDTO chat = await _chatService.LeaveFromChat(chatId, currentUser.Id);
+            await Clients.Caller.ReceiveRemovedChatId(chatId);
+
+            foreach (UserDTO user in chat.Users)
+                await Clients.User(user.Id).ReceiveChat(chat);
+        }
+        catch(Exception ex)
+        {
+            await Clients.Caller.ReceiveErrorMessage(ex.Message);
+        }
+    } 
+    public async Task AddUserToChatAsync(int chatId, string ownerId, string userId)
     {
         throw new NotImplementedException();
     }
-
-
-     
-    public async Task LeaveChatAsync(int chatId)
+    public async Task RemoveUserFromChatAsync(int chatId, string ownerId, string userId)
     {
-
-    }
-    public async Task JoinChatAsync(int chatId)
-    {
-
+        throw new NotImplementedException();
     }
 
 
