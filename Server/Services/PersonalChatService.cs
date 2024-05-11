@@ -10,30 +10,32 @@ using Shared.DTOs.Response.ChatsDTO;
 namespace Server.Services;
 
 public record PersonalChatService(
-    IRepository<PersonalChat> _personalChatRepo,
+    IChatRepository<PersonalChat> _personalChatRepo,
     IMapper _mapper,
     UserManager<ApplicationUser> _userManager
-    ) : IChatService<PersonalChatRequest>
+    ) : IChatService<PersonalChatRequest, PersonalChatDTO>
 {
-    public async Task<BaseChatDTO?> GetChatByIdAsync(int chatId)
+    public async Task<PersonalChatDTO?> GetChatByIdAsync(int chatId)
         => _mapper.Map<PersonalChatDTO>(await _personalChatRepo.GetByIdAsync(chatId));
-    public async Task<List<BaseChatDTO>> GetChatsByUserAsync(ApplicationUser user)
-    {
-        List<PersonalChat> allChats = await _personalChatRepo.GetAllAsync();
+    public async Task<List<PersonalChatDTO>> GetChatListByUserAsync(ApplicationUser user)
+        => _mapper.Map<List<PersonalChatDTO>>(await _personalChatRepo.GetByUser(user));
 
-        List<PersonalChatDTO> personalChatDTOs = _mapper.Map<List<PersonalChatDTO>>(allChats.Where(c => c.Users.Any(u => u.Id == user.Id)));
-        return personalChatDTOs.Cast<BaseChatDTO>().ToList();
+    public async Task<List<PersonalChatDTO>> GetChatListByUserAsyncDB(ApplicationUser user)
+    {
+        List<PersonalChat> allChats = await _personalChatRepo.GetByUser(user);
+
+        return _mapper.Map<List<PersonalChatDTO>>(allChats);
     }
 
-    public async Task<BaseChatDTO> UpdateChatAsync(BaseChatDTO chatDTO)
+    public async Task<PersonalChatDTO> UpdateChatAsync(BaseChatDTO chatDTO)
         => _mapper.Map<PersonalChatDTO>(await _personalChatRepo.UpdateAsync(_mapper.Map<PersonalChat>(chatDTO)));
-    public async Task<BaseChatDTO> CreateChatAsync(PersonalChatRequest personalChatRequest, ApplicationUser currentUser)
+    public async Task<PersonalChatDTO> CreateChatAsync(PersonalChatRequest personalChatRequest, ApplicationUser currentUser)
     {
-        ApplicationUser? otherUser = await _userManager.FindByEmailAsync(personalChatRequest.UserEmail);
+        ApplicationUser? otherUser = await _userManager.FindByEmailAsync(personalChatRequest.Email);
 
         if (otherUser is null)
-            throw new ArgumentNullException("User with this email not exist");
-        else if (otherUser == currentUser)
+            throw new ArgumentException("User with this email not exist");
+        if (otherUser == currentUser)
             throw new ArgumentException("You can't create a chat with yourself");
 
         List<PersonalChat> allChats = await _personalChatRepo.GetAllAsync();

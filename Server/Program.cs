@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Server.Data;
-using Server.Hubs;
+using Server.Helpers;
+using Server.Hubs.ChatHubs;
 using Server.Models;
 using Server.Models.Chats;
 using Server.Models.Messages;
@@ -12,13 +14,9 @@ using Server.Repositories;
 using Server.Repositories.IRepositories;
 using Server.Services;
 using Server.Services.IServices;
-using System.Text;
-using Newtonsoft.Json;
-using Shared.DTOs.Response.ChatsDTO;
 using Shared.DTOs.Request.Chat;
-using Server.Helpers;
-using Server.Hubs.ChatHubs.PersonalChatHub;
-using Server.Hubs.ChatHubs.GroupChatHub;
+using Shared.DTOs.Response.ChatsDTO;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,6 +45,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
           ValidateIssuerSigningKey = true,
           ValidIssuer = jwtSettings.Issuer,
           ValidAudience = jwtSettings.Audience,
+          RequireExpirationTime = true,
+          ClockSkew = TimeSpan.FromSeconds(0),
           IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(jwtSettings.Secret)),
       };
@@ -70,30 +70,29 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       };
   });
 
-
-builder.Services.Configure<IdentityOptions>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireDigit = false;
     options.Password.RequireUppercase = false;
-});
+
+    options.SignIn.RequireConfirmedEmail = false;
+}).AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options
     => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new ArgumentException("Not set default connection")));
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddScoped<IRepository<PersonalChat>, ChatRepository<PersonalChat>>();
-builder.Services.AddScoped<IRepository<GroupChat>, ChatRepository<GroupChat>>();
+builder.Services.AddScoped<IChatRepository<PersonalChat>, ChatRepository<PersonalChat>>();
+builder.Services.AddScoped<IChatRepository<GroupChat>, ChatRepository<GroupChat>>();
 builder.Services.AddScoped<IRepository<ChatMessage>, MessageRepository>();
 
-builder.Services.AddScoped<IChatService<PersonalChatRequest>, PersonalChatService>();
+builder.Services.AddScoped<IChatService<PersonalChatRequest, PersonalChatDTO>, PersonalChatService>();
 builder.Services.AddScoped<IGroupChatService, GroupChatService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
 

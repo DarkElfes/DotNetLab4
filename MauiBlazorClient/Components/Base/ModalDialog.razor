@@ -1,0 +1,78 @@
+﻿@using System.Reflection
+@using Microsoft.AspNetCore.Components.Rendering
+@inject IDialogService DialogService;
+
+@implements IDisposable;
+
+<div class="Modal" hidden="@_isHidden" tabindex="-1" role="dialog">
+    <div class="modal-container">
+        <div class="modal-backdrop" @onclick="Hide"/>
+        <div class="modal-dialog" role="document">
+
+            <div class="title">
+                @_title
+            </div>
+
+            <div class="body">
+                @if (_modalType == ModalType.Notification)
+                {
+                    <p>@_notification</p>
+                    <Button OnClick="Hide">Ok</Button>
+                }
+                else
+                {
+                    <GenericEditForm ModelType="_modelType" OnSubmit="_onSubmit" OnCancel="Hide" />
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _isHidden = true;
+    private ModalType _modalType;
+
+    private string _title = "Title";
+
+    private string? _notification;
+
+    private Type _modelType = null!;
+    private Action<object?> _onSubmit = null!;
+
+    protected override void OnInitialized()
+    {
+        DialogService.OnShowNotification += ShowNotification;
+        DialogService.OnShowForm += ShowForm;
+    }
+
+    void Hide() => _isHidden = true;
+
+    void ShowNotification(string title, string notification)
+    {
+        _modalType = ModalType.Notification;
+        (_title, _notification) = (title, notification);
+        _isHidden = false;
+        StateHasChanged();
+    }
+
+    void ShowForm(string title, Type modelType, Action<object?> onSubmit){
+        _modalType = ModalType.Form;
+        (_title, _modelType, _onSubmit) = (title, modelType, onSubmit);
+        _isHidden = false;
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        DialogService.OnShowNotification -= ShowNotification;
+        DialogService.OnShowForm -= ShowForm;
+    }
+
+
+    public enum ModalType
+    {
+        Notification,
+        Form,
+    }
+}

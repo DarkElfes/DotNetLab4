@@ -1,17 +1,52 @@
 ﻿@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.MessageList;
 @using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.MessageInput;
+@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.ChatInfo;
+@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.ChatDetails;
 
+@implements IDisposable;
 
-<div class="medium-panel">
-    @if (CurrentChat is not null)
-    {
-        <MessageList/>
-        <MessageInput/>
-    }
-</div>
+@if (CurrentChat is not null)
+{
+    <CascadingValue Value="@_chatDetailsState" Name="ChatDetailsState">
+        <div class="medium-panel @(_chatDetailsState.IsDetailsPanelShow ? "with-details" : null)">
+            <ChatInfo />
+            <MessageList />
+            <MessageInput />
+        </div>
 
+        @if (_chatDetailsState.IsDetailsPanelShow)
+        {
+            <ChatDetails />
+        }
+    </CascadingValue>
+}
 
-@code{
+@code {
     [CascadingParameter(Name = "CurrentChat")]
-    public BaseChatDTO? CurrentChat {get; set;}
+    public BaseChatDTO? CurrentChat { get; set; }
+
+    private ChatDetailsState _chatDetailsState = new();
+
+    protected override void OnInitialized()
+        => _chatDetailsState.Refresh += StateHasChanged;
+
+    public void Dispose()
+        => _chatDetailsState.Refresh -= StateHasChanged;
+
+    public class ChatDetailsState()
+    {
+        private bool _isDetailsPanelShow;
+
+        public event Action? Refresh;
+
+        public bool IsDetailsPanelShow
+        {
+            get => _isDetailsPanelShow;
+            set
+            {
+                _isDetailsPanelShow = value;
+                Refresh?.Invoke();
+            }
+        }
+    }
 }

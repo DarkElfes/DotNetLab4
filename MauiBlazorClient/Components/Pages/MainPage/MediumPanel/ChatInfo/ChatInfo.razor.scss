@@ -1,0 +1,28 @@
+﻿@import "../../../../../wwwroot/styles/utils/_radius.scss";
+@import "../../../../../wwwroot/styles/utils/_spacing.scss";
+@import "../../../../../wwwroot/styles/utils/_colors.scss";
+
+.chat-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: $md;
+    margin: 0 $xs;
+    border-radius: 0 0 $radius-8 $radius-8;
+    box-shadow: 0 0 12px 10px $black;
+    z-index: 1;
+    background: $dark;
+
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+        color: $gray;
+
+        &.online {
+            color: $primary;
+        }
+    }
+}

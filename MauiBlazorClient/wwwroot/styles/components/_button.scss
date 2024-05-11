@@ -1,0 +1,51 @@
+﻿@import '../utils/_colors.scss';
+@import '../utils/_radius.scss';
+@import '../utils/_spacing.scss';
+@import '../utils/_mixins.scss';
+
+button {
+    display: flex;
+    align-items: center;
+    gap: $sm;
+    background: $dark-primary;
+    color: $primary;
+    border-radius: $radius-8;
+    border: 1px solid $transparent;
+    padding: $sm $lg;
+    transition: all 300ms ease-out;
+    overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+
+
+    &.clicked {
+        position: relative;
+        pointer-events: none;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: $radius-round;
+            aspect-ratio: 1;
+            width: 20%;
+            background: inherit;
+            animation: onClick 200ms ease-out;
+        }
+    }
+
+    &.only-icon {
+        padding: $md;
+        border-radius: $radius-round;
+    }
+}
+
+
+@keyframes onClick {
+    to {
+        transform: translate(-50%, -50%) scale(6);
+        opacity: 0.4;
+    }
+}

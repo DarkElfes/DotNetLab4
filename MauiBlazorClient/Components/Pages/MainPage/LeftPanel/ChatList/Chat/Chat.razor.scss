@@ -27,11 +27,12 @@
         flex: 1 0 0;
 
 
-        div:last-child {
+        div:nth-child(2) {
             @include secondary;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+            color: $gray;
         }
     }
 

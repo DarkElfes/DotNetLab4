@@ -1,0 +1,60 @@
+﻿@import "../../wwwroot/styles/utils/_colors.scss";
+@import "../../wwwroot/styles/utils/_mixins.scss";
+@import "../../wwwroot/styles/utils/_spacing.scss";
+@import "../../wwwroot/styles/utils/_radius.scss";
+
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1510;
+
+    .modal-backdrop {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, .7);
+        z-index: -1;
+    }
+
+    .modal-dialog {
+        display: flex;
+        width: 400px;
+        padding: $xl $xl3;
+        flex-direction: column;
+        gap: 10px;
+        border-radius: $radius-10;
+        pointer-events: auto;
+        align-items: flex-end;
+        background: $dark;
+        animation: emergence .3s ease-out forwards;
+
+        div {
+
+            &.title {
+                @include large;
+                align-self: stretch;
+            }
+
+            &.body {
+                display: flex;
+                padding: $xs;
+                flex-direction: column;
+                gap: $md;
+                flex: 1 0 0;
+                align-self: stretch;
+
+                ::deep > button {
+                    align-self: flex-end;
+                }
+            }
+        }
+    }
+}

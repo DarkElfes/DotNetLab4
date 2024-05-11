@@ -1,15 +1,7 @@
 [
   {
-    "outputFile": "wwwroot/css/app.css",
-    "inputFile": "wwwroot/css/app.scss"
-  },
-  {
     "outputFile": "Components/Pages/MainPage/LeftPanel/ChatList/Chat/Chat.razor.css",
     "inputFile": "Components/Pages/MainPage/LeftPanel/ChatList/Chat/Chat.razor.scss"
-  },
-  {
-    "outputFile": "Components/Pages/MainPage/LeftPanel/ChatList/ChatList.razor.css",
-    "inputFile": "Components/Pages/MainPage/LeftPanel/ChatList/ChatList.razor.scss"
   },
   {
     "outputFile": "Components/Pages/MainPage/LeftPanel/LeftPanel.razor.css",
@@ -48,14 +40,6 @@
     "inputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageList.razor.scss"
   },
   {
-    "outputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageList.razor.css",
-    "inputFile": "Components/Pages/MainPage/MediumPanel/MessageList/MessageList.razor.scss"
-  },
-  {
-    "outputFile": "Components/Loader/Loader.razor.css",
-    "inputFile": "Components/Loader/Loader.razor.scss"
-  },
-  {
     "outputFile": "Components/Global/Veil.razor.css",
     "inputFile": "Components/Global/Veil.razor.scss"
   },
@@ -74,5 +58,45 @@
   {
     "outputFile": "Components/Pages/MainPage/Main.razor.css",
     "inputFile": "Components/Pages/MainPage/Main.razor.scss"
+  },
+  {
+    "outputFile": "Components/Global/ModalDialog.razor.css",
+    "inputFile": "Components/Global/ModalDialog.razor.scss"
+  },
+  {
+    "outputFile": "Components/Global/GenericEditForm.razor.css",
+    "inputFile": "Components/Global/GenericEditForm.razor.scss"
+  },
+  {
+    "outputFile": "Components/Global/GenericEditForm.razor.css",
+    "inputFile": "Components/Global/GenericEditForm.razor.scss"
+  },
+  {
+    "outputFile": "Components/Global/MenuList/MenuListItem.razor.css",
+    "inputFile": "Components/Global/MenuList/MenuListItem.razor.scss"
+  },
+  {
+    "outputFile": "Components/Global/MenuList/MenuList.razor.css",
+    "inputFile": "Components/Global/MenuList/MenuList.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/ChatInfo/ChatInfo.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/ChatInfo/ChatInfo.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/ChatInfo/ChatInfo.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/ChatInfo/ChatInfo.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/Main.razor.css",
+    "inputFile": "Components/Pages/MainPage/Main.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/ChatDetailsPanel/ChatDetailsPanel.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/ChatDetailsPanel/ChatDetailsPanel.razor.scss"
+  },
+  {
+    "outputFile": "Components/Pages/MainPage/MediumPanel/ChatDetailsPanel/ChatDetailsPanel.razor.css",
+    "inputFile": "Components/Pages/MainPage/MediumPanel/ChatDetailsPanel/ChatDetailsPanel.razor.scss"
   }
 ]

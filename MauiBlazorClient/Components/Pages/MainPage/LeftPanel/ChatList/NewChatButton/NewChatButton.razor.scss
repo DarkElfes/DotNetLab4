@@ -1,12 +1,7 @@
-﻿div.new-chat-container{
+﻿@import "../../../../../../wwwroot/styles/utils/_spacing.scss";
+
+div.new-chat-container{
     position: absolute;
-    width: 60px;
-    height: 60px;
-    bottom: 15px;
-    right: 15px;
-}
-
-
-ul {
-    padding: 10px;
+    bottom: $sm;
+    right: $sm;
 }

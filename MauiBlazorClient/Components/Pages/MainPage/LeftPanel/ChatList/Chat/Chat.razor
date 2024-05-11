@@ -5,23 +5,22 @@
 
 <div class="chat @(ChatManager.CurrentChat == CurrentChat ? "current" : "" )"
      @onclick="OpenChat"
-     @oncontextmenu="() =>{ _isContextMenuDisplayed = true;}">
+     @oncontextmenu="() => _isContextMenuDisplayed = true"
+     @onmouseleave="() => _isContextMenuDisplayed = false">
 
-    <img src="images/chat-icon.jfif" alt="chat-icon"/>
+    <img src="images/@(_isPersonalChat ? "personal" : "group")-chat-icon.jpeg" alt="chat-icon" style=""/>
 
     <div>
         <div>
             @if (CurrentChat is PersonalChatDTO personalChat)
             {
                 @personalChat.Users.FirstOrDefault(u => u.Id != CurrentUser?.Id)?.UserName
-                ;
             }
             else if (CurrentChat is GroupChatDTO groupChat)
             {
                 @groupChat.Name
-                ;
             }
-        </div>
+        </div>  
 
         @if (_lastMessage is not null)
         {
@@ -45,9 +44,10 @@
 
     private MessageDTO? _lastMessage;
     private bool _isContextMenuDisplayed;
+    private bool _isPersonalChat;
 
     protected override void OnParametersSet()
-        => _lastMessage = CurrentChat.Messages.LastOrDefault();
+        => (_lastMessage, _isPersonalChat) = (CurrentChat.Messages.LastOrDefault(), CurrentChat.GetType().Equals(typeof(PersonalChatDTO)));
 
     void OpenChat()
     => ChatManager.OpenChat(CurrentChat);

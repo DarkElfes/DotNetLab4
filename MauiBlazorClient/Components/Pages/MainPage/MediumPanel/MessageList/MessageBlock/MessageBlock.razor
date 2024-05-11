@@ -1,6 +1,6 @@
 ﻿
 
-<div class="message-block @(_isOwnMessage ? "own" : null)">
+<div class="message-container @(_isOwnMessage ? "own" : null)">
     <div class="message">
         @if (IsGroupChat && !_isOwnMessage)
         {
@@ -9,7 +9,7 @@
             </div>
         }
         @Message?.Message
-        <span>@Message?.Timestamp.ToShortTimeString()</span>
+        <span>@Message?.Timestamp.ToString("HH:mm")</span>
     </div>
 </div>
 

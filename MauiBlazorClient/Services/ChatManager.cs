@@ -1,4 +1,6 @@
-﻿using MauiBlazorClient.Services.ChatServices.IChatServices;
+﻿using MauiBlazorClient.Services.Authentication;
+using MauiBlazorClient.Services.ChatServices.IChatServices;
+using Microsoft.AspNetCore.Components.Authorization;
 using Shared.DTOs.Request.Chat;
 using Shared.DTOs.Response.ChatsDTO;
 
@@ -6,7 +8,8 @@ namespace MauiBlazorClient.Services;
 
 public record ChatManager(
     IPersonalChatService _personalChatService,
-    IGroupChatService _groupChatService
+    IGroupChatService _groupChatService,
+    AuthenticationStateProvider _authStateProvider
     ) : IChatService
 {
     public event Action<List<BaseChatDTO>>? OnChatsChanged;
@@ -18,8 +21,11 @@ public record ChatManager(
 
     private IBaseChatService? _currentChatService;
 
-    public async Task ConnectAsync(string token)
+    public async Task ConnectAsync()
     {
+        var jwt = await ((AuthStateProvider)_authStateProvider).GetTokenAsync();
+        string token = jwt.EncodedToken;
+
         await _personalChatService.ConnectAsync(token);
         await _groupChatService.ConnectAsync(token);
 
@@ -41,11 +47,12 @@ public record ChatManager(
         await _currentChatService?.SendMessageAsync(messageRequest);
     }
 
-
     private void UpdateChats(List<BaseChatDTO> chats)
     {
         Chats = [.. _personalChatService.Chats ?? [], .. _groupChatService.Chats ?? []];
-        Chats = Chats.OrderByDescending(c => c.Messages.Max(m => m.Timestamp)).ToList();
+        Chats = [.. Chats.OrderByDescending(c => c.Messages.Count != 0 ? c.Messages.Max(m => m.Timestamp) : DateTime.MinValue)];
+
+        CurrentChat = Chats.FirstOrDefault(c => c.Id.Equals(CurrentChat?.Id));
 
         OnChatsChanged?.Invoke(Chats);
         OnCurrentChatChanged?.Invoke(CurrentChat);

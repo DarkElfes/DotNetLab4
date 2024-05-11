@@ -1,0 +1,13 @@
+﻿
+<button class="@GetClasses()"
+        type="@Type"
+        disabled="@Disabled"
+        @onclick="OnClickHandlerAsync">
+
+
+    @IconStart?.ToMarkup()
+    @ChildContent
+    @IconEnd?.ToMarkup()
+</button>
+
+

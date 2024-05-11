@@ -6,7 +6,8 @@ namespace Server.Models;
 
 public class ApplicationUser : IdentityUser
 {
-    public List<BaseChat> Chats { get; set; } = new();
+    //public string ImageUrl { get; set; } = "/images/personal-chat-icon";
 
-    public List<ChatMessage> ChatMessages { get; set; } = new();
+    public List<BaseChat> Chats { get; set; } = [];
+    public List<ChatMessage> ChatMessages { get; set; } = [];
 }

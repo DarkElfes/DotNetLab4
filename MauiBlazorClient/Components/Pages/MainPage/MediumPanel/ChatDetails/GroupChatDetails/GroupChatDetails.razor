@@ -1,0 +1,12 @@
+﻿@if (CurrentUser.Id.Equals(Chat?.Owner?.Id))
+{
+    <Button IconStart="@(new IconList.Size24.AddUser())"
+            OnClick="AddUser" />
+}
+
+<div class="chat-user-list">
+    @foreach (var user in Chat.Users)
+    {
+        <div>@user.UserName</div>
+    }
+</div>

@@ -4,6 +4,6 @@ public class BaseChatDTO
 {
     public int Id { get; set; }
 
-    public List<UserDTO> Users { get; set; } = new();
-    public List<MessageDTO> Messages { get; set; } = new();
+    public List<UserDTO> Users { get; set; } = [];
+    public List<MessageDTO> Messages { get; set; } = [];
 }

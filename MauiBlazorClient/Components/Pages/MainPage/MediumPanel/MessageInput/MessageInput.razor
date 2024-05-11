@@ -1,6 +1,8 @@
 ﻿@inject ChatManager ChatManager;
 
-<input class="message-input" @bind-value="_message" @bind-value:event="oninput" @onkeydown="SendMessage" placeholder="Message" />
+<div class="message-input-container">
+    <input class="message-input" @bind-value="_message" @bind-value:event="oninput" @onkeydown="SendMessage" placeholder="Message" />
+</div>
 
 @code {
     private string _message = string.Empty;
@@ -9,7 +11,7 @@
     {
         if (e.Key == "Enter" && !string.IsNullOrWhiteSpace(_message))
         {
-            await ChatManager.SendMessageAsync(new(_message, DateTime.UtcNow));
+            await ChatManager.SendMessageAsync(new(_message));
 
             _message = string.Empty;
         }

@@ -9,35 +9,20 @@
     padding: $sm;
     position: relative;
     transition: all .2s ease-in;
-}
 
-
-@media only screen and (max-width: 600px) {
-    .left-panel {
+    @media only screen and (max-width: 768px) {
         width: 200px;
     }
-}
 
-@media only screen and (min-width: 600px) {
-    .left-panel {
-        width: 250px;
+    @media only screen and (min-width: 768px) {
+        width: 300px;
     }
-}
 
-@media only screen and (min-width: 768px) {
-    .left-panel {
+    @media only screen and (min-width: 992px) {
         width: 350px;
     }
-}
 
-@media only screen and (min-width: 992px) {
-    .left-panel {
+    @media only screen and (min-width: 1200px) {
         width: 400px;
-    }
-}
-
-@media only screen and (min-width: 1200px) {
-    .left-panel {
-        width: 450px;
     }
 }

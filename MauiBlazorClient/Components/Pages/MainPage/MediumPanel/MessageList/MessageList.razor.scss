@@ -1,7 +1,10 @@
-﻿ .message-list {
+﻿@import "../../../../../wwwroot/styles/utils/_spacing.scss";
+@import "../../../../../wwwroot/styles/utils/_colors.scss";
+
+.message-list {
     overflow-y: auto;
     overflow-x: hidden;
-    transition: all 1s ease;
+    padding-inline: 5%;
 
     &::-webkit-scrollbar {
         display: none;

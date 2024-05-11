@@ -2,7 +2,7 @@
 
 public class GroupChatDTO : BaseChatDTO
 {
-    public string? Name { get; set; }
-    public UserDTO? OwnerUser { get; set; }
+    public string Name { get; set; } = null!;
+    public UserDTO Owner { get; set; } = null!;
 }
 

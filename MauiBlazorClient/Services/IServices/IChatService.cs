@@ -12,7 +12,7 @@ internal interface IChatService
     List<BaseChatDTO> Chats { get; }
 
 
-    Task ConnectAsync(string token);
+    Task ConnectAsync();
     Task DisconnectAsync();
 
     Task SendMessageAsync(MessageRequest message);

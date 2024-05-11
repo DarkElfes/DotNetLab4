@@ -1,5 +1,4 @@
-﻿using MauiBlazorClient.Components.Global;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Shared.DTOs.Request.Chat;
@@ -9,14 +8,14 @@ using Shared.DTOs.Response.ChatsDTO;
 namespace MauiBlazorClient.Services.ChatServices;
 
 public abstract class BaseChatService<T>(
-    IModalDialogService modalDialogService,
+    IDialogService dialogService,
     IConfiguration configuration) where T : ChatRequest
 {
-    protected readonly IModalDialogService _modalDialogService = modalDialogService;
+    protected readonly IDialogService _dialogService = dialogService;
     protected readonly string _serverUrl = configuration.GetValue<string>("ServerApiUrl")
         ?? throw new ArgumentNullException("Not found server url");
 
-    protected HubConnection? HubConnection;
+    protected HubConnection HubConnection;
 
     public List<BaseChatDTO> Chats { get; set; } = null!;
     public event Action<List<BaseChatDTO>>? OnChatsChanged;
@@ -27,6 +26,7 @@ public abstract class BaseChatService<T>(
     {
         if (HubConnection is not null)
             await HubConnection.StopAsync();
+
         Chats?.Clear();
     }
 
@@ -64,10 +64,10 @@ public abstract class BaseChatService<T>(
     }
     protected void CreateBaseHubMethods()
     {
-        HubConnection?.On<List<BaseChatDTO>?>("ReceiveChats", chats
+        HubConnection?.On<List<BaseChatDTO>?>("ReceiveChatList", chats
             => UpdateChats(() => Chats = chats ?? []));
 
-        HubConnection?.On<GroupChatDTO>("ReceiveChat", chat
+        HubConnection?.On<BaseChatDTO>("ReceiveChat", chat
             => UpdateChats(() =>
             {
                 if (Chats.FirstOrDefault(c => c.Id.Equals(chat.Id)) is BaseChatDTO oldChat)
@@ -94,5 +94,5 @@ public abstract class BaseChatService<T>(
         => MainThread.BeginInvokeOnMainThread(action);
 
     protected void ShowErrorMessage(string errorMessage)
-        => UpdateUI(() => _modalDialogService.Show("Error", errorMessage));
+        => UpdateUI(() => _dialogService.ShowNotification("Error", errorMessage));
 }

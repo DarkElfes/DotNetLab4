@@ -1,1 +1,1 @@
-﻿.chat-list{display:flex;align-self:stretch;align-items:stretch;flex-direction:column;flex:1 0 0;overflow:auto}.chat-list::-webkit-scrollbar{display:none}.chat-list btn.icon{width:50px;height:50px;position:absolute;right:10px;bottom:10px}
+﻿.chat-list{display:flex;position:relative;align-self:stretch;align-items:stretch;flex-direction:column;flex:1 0 0;overflow:auto}.chat-list::-webkit-scrollbar{display:none}

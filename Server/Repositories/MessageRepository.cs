@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Server.Data;
+using Server.Models;
 using Server.Models.Messages;
 using Server.Repositories.IRepositories;
 
@@ -17,9 +18,9 @@ public record MessageRepository(
 
     public async Task<ChatMessage> CreateAsync(ChatMessage entity)
     {
-        await _db.ChatMessages.AddAsync(entity);
+        var newEntity = await _db.ChatMessages.AddAsync(entity);
         await _db.SaveChangesAsync();
-        return entity;
+        return newEntity.Entity;
     }
     public async Task<ChatMessage?> UpdateAsync(ChatMessage entity)
     {
@@ -36,5 +37,15 @@ public record MessageRepository(
             return true;
         }
         return false;
+    }
+
+    public Task<List<ChatMessage>> GetByUser(ApplicationUser user)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<ChatMessage>> GetByUserCompiled(ApplicationUser user)
+    {
+        throw new NotImplementedException();
     }
 }

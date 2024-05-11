@@ -1,0 +1,15 @@
+﻿<li class="menu-list-item @(IsShowDivider ? "show-divider" : null)" @onclick="Action">
+    <p>@Text</p>
+</li>
+
+@code {
+    [Parameter]
+    public bool IsShowDivider { get; set; }
+
+    [Parameter]
+    public string Text { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> Action { get; set; }
+
+}

@@ -58,6 +58,18 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Remove="Components\Base\Icons\Icon.razor.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Components\Pages\MainPage\MediumPanel\ChatInfo\ChatInfo.razor.scss" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Components\Pages\MainPage\MediumPanel\ChatInfo\ChatInfo.razor.scss" />
+    </ItemGroup>
+
+    <ItemGroup>
       <EmbeddedResource Include="appsettings.json" />
     </ItemGroup>
 

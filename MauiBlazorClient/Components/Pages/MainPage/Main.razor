@@ -5,7 +5,8 @@
 @using MauiBlazorClient.Components.Pages.MainPage.MediumPanel;
 
 @inject ChatManager ChatManager;
-@inject AuthenticationStateProvider AuthenticationStateProvider;
+@inject AuthService AuthService;
+
 
 <AuthorizeView>
     <CascadingValue Value="@CurrentUser" Name="CurrentUser">
@@ -18,6 +19,7 @@
     </CascadingValue>
 </AuthorizeView>
 
+
 @code {
     public BaseChatDTO? CurrentChat { get; set; }
     public UserDTO? CurrentUser { get; set; }
@@ -27,14 +29,7 @@
         => ChatManager.OnCurrentChatChanged += Update;
 
     protected override async Task OnInitializedAsync()
-    {
-        AuthenticationState state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        CurrentUser = new(
-            state.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.NameIdentifier)).Value,
-            state.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Name)).Value,
-            state.User.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Email)).Value
-        );
-    }
+        =>  CurrentUser = await AuthService.GetCurrentUserAsync();
 
     public void Dispose()
         => ChatManager.OnCurrentChatChanged -= Update;

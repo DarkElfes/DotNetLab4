@@ -1,12 +1,13 @@
-﻿using Shared.DTOs.Request.Chat;
+﻿using Server.Models.Chats;
+using Shared.DTOs.Request.Chat;
 using Shared.DTOs.Response.ChatsDTO;
 
 namespace Server.Services.IServices;
 
-public interface IGroupChatService : IChatService<GroupChatRequest> 
+public interface IGroupChatService : IChatService<GroupChatRequest, GroupChatDTO> 
 {
-    Task<BaseChatDTO> LeaveFromChat(int chatId, string userId);
+    Task<GroupChatDTO> LeaveFromChat(int chatId, string userId);
 
-    Task<BaseChatDTO> AddUserToChat(int chatId, string ownerId, string userId);
-    Task<BaseChatDTO> RemoveUserFromChat(int chatId, string ownerId, string userId);
+    Task<GroupChatDTO> AddUserAsync(int chatId, string ownerId, string userEmail);
+    Task<GroupChatDTO> RemoveUserFromChat(int chatId, string ownerId, string userId);
 }

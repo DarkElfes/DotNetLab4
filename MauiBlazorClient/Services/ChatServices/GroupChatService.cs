@@ -6,9 +6,9 @@ using Shared.DTOs.Request.Chat;
 namespace MauiBlazorClient.Services.ChatServices;
 
 public class GroupChatService(
-    IModalDialogService modalDialogService,
+    IDialogService dialogService,
     IConfiguration configuration
-    ) : BaseChatService<GroupChatRequest>(modalDialogService, configuration), IGroupChatService
+    ) : BaseChatService<GroupChatRequest>(dialogService, configuration), IGroupChatService
 {
     public override async Task ConnectAsync(string token)
     {
@@ -24,8 +24,11 @@ public class GroupChatService(
     public async Task LeaveFromChatAsync(int chatId)
         => await HubConnection!.SendAsync("LeaveFromChatAsync", chatId);
 
+    public async Task AddUserAsync(AddUserRequest addUserRequest, int chatId)
+        => await HubConnection!.SendAsync("AddUserAsync", addUserRequest, chatId);
+
     private void CreateGroupHubMethods()
     {
-
+        
     }
 }

@@ -1,11 +1,16 @@
-﻿@import '../../../../../wwwroot/styles/styles.scss';
+﻿@import '../../../../../wwwroot/styles/utils/_colors.scss';
+@import '../../../../../wwwroot/styles/utils/_spacing.scss';
+@import '../../../../../wwwroot/styles/utils/_radius.scss';
+@import '../../../../../wwwroot/styles/utils/_mixins.scss';
 
-.message-input {
-    border: none;
-    width: 100%;
-    outline: none !important;
-    color: $white;
-    padding: $lg;
-    border-radius: $radius-10;
-    background: $dark;
-}
+
+.message-input-container {
+    box-shadow: 0 -5px 10px 10px $black;
+    z-index: 2;
+
+    .message-input {
+        @include medium;
+        padding: $md $lg;
+        border-radius: $radius-10;
+    }
+}   

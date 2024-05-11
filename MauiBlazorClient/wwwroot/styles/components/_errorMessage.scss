@@ -1,0 +1,8 @@
+﻿@import '../utils/_mixins.scss';
+@import '../utils/_colors.scss';
+
+.error-message {
+    @include medium;
+    text-align: center;
+    color: $danger;
+}

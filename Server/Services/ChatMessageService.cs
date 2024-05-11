@@ -6,7 +6,6 @@ using Server.Models;
 using Server.Models.Messages;
 using Server.Repositories.IRepositories;
 using Server.Services.IServices;
-using Shared.DTOs.Request;
 using Shared.DTOs.Request.Chat;
 using Shared.DTOs.Response;
 
@@ -23,7 +22,7 @@ public record MessageService(
         => _mapper.Map<MessageDTO>(await _chatMessageRepo.CreateAsync(new()
         {
             Message = messageRequest.Message,
-            Timestamp = messageRequest.Timestamp,
+            Timestamp = DateTime.UtcNow,
 
             User = currentUser,
             Chat = await _db.BaseChats

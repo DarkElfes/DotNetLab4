@@ -1,0 +1,42 @@
+@import "../../../wwwroot/styles/utils/_spacing.scss";
+@import "../../../wwwroot/styles/utils/_colors.scss";
+@import "../../../wwwroot/styles/utils/_mixins.scss";
+@import "../../../wwwroot/styles/utils/_radius.scss";
+
+.menu-list {
+    padding: $sm;
+    width: 200px;
+    list-style-type: none;
+    border-radius: $radius-6;
+    background-color: $dark-primary;
+    display: flex;
+    flex-direction: column;
+
+
+    .menu-list-item {
+        position: relative;
+
+        &.show-divider::before {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 0%;
+            width: 100%;
+            border-bottom: 1px solid $dark;
+        }
+
+        p {
+            @include small;
+            color: $primary;
+            padding: $xs $md;
+            -webkit-user-select: none;
+            user-select: none;
+            transition: all 0.3s ease-out;
+        }
+
+        &:hover p {
+            text-shadow: 0 0 10px $primary;
+            transform: translateX(15%);
+        }
+    }
+}

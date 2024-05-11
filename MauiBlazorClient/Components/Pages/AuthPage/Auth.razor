@@ -6,8 +6,8 @@
 
 @implements IDisposable;
 
-@inject AuthenticationStateProvider StateProvider;
 @inject IAnimatedNavigationManager Navigation;
+@inject AuthService AuthService;
 
 
 <div class="content">
@@ -42,15 +42,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        AuthenticationState state = await StateProvider.GetAuthenticationStateAsync();
-
-        if (state.User?.Identity?.IsAuthenticated ?? false)
-        {
-            long expTimeUnix = long.Parse(state.User?.Claims.FirstOrDefault(c => c.Type.Equals("exp"))?.Value ?? "0");
-
-            if (DateTime.UtcNow < DateTimeOffset.FromUnixTimeSeconds(expTimeUnix))
-                await Navigation.NavigateToAsync("/main");
-        }
+        if (await AuthService.IsLoggedAsync())
+            await Navigation.NavigateToAsync("/main");
 
         _isCheckAuthentication = false;
     }

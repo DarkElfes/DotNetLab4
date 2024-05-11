@@ -1,0 +1,43 @@
+﻿
+<div class="form-wrapper">
+    <EditForm Model=@_model OnValidSubmit=@HandleSubmit>
+        <DataAnnotationsValidator />
+
+        @foreach (var prop in ModelType.GetProperties())
+        {
+            <input value="@prop.GetValue(_model)?.ToString()"
+                   @onchange="e => prop.SetValue(_model, e.Value)"
+                   placeholder="@prop.Name"/>
+        }
+
+        <div class="buttons-manager">
+            <Button Type="ButtonType.Submit">Done</Button>
+            <Button OnClick="OnCancel">Cancel</Button>
+        </div>
+
+    </EditForm>
+</div>
+
+
+@code {
+    private object? _model;
+
+    [Parameter, EditorRequired]
+    public required Type ModelType { get; set; }
+
+    [Parameter, EditorRequired]
+    public required Action<object?> OnSubmit { get; set; }
+
+    [Parameter, EditorRequired]
+    public required EventCallback OnCancel { get; set; }
+
+    protected override void OnParametersSet()
+        => _model = Activator.CreateInstance(ModelType);
+
+
+    void HandleSubmit()
+    {
+        OnSubmit.Invoke(_model);
+        OnCancel.InvokeAsync();
+    }
+}

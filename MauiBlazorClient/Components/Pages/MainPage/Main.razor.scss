@@ -1,10 +1,12 @@
 ﻿@import '../../../wwwroot/styles/utils/_colors.scss';
+@import '../../../wwwroot/styles/utils/_spacing.scss';
 
-.content{
-    display:flex;
+.content {
+    display: flex;
     flex-direction: row;
     align-items: stretch;
     width: 100vw;
     height: 100vh;
     background: $black;
 }
+

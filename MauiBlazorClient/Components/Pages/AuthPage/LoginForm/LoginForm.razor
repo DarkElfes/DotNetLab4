@@ -1,6 +1,6 @@
 ﻿@using static MauiBlazorClient.Components.Pages.AuthPage.Auth
 
-@inject IAuthenticationService AuthenticationService;
+@inject AuthService AuthService;
 @inject IAnimatedNavigationManager Navigation;
 
 
@@ -19,8 +19,8 @@
     </div>
 
     <div class="manager">
-        <Button OnClick="_ => AuthState.IsLogin = false">Not have account</Button>
-        <Button Type="submit">Login</Button>
+        <Button Type="ButtonType.Submit">Login</Button>
+        <Button OnClick="() => AuthState.IsLogin = false">Not have account</Button>
     </div>
     <ErrorMessage Message="@_errorMessage" />
 </EditForm>
@@ -28,20 +28,20 @@
 
 @code {
     [CascadingParameter(Name = "AuthState")]
-    public AuthState? AuthState { get; set; }
+    public AuthState AuthState { get; set; } = null!;
 
     private LoginRequest _inputModel = new();
     private string? _errorMessage;
 
 
-    private async Task Submit()
+    async Task Submit()
     {
         AuthState!.IsSubmitting = true;
         _errorMessage = string.Empty;
 
-        _errorMessage = await AuthenticationService.LoginAsync(_inputModel);
+        (bool isSuccessfully, _errorMessage) = await AuthService.LoginAsync(_inputModel);
 
-        if (string.IsNullOrEmpty(_errorMessage))
+        if (isSuccessfully)
             await Navigation.NavigateToAsync("/main");
 
         AuthState!.IsSubmitting = false;

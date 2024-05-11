@@ -1,5 +1,6 @@
 ﻿@import '../../../../wwwroot/styles/utils/_spacing.scss';
 
+
 .medium-panel {
     overflow: hidden;
     display: flex;
@@ -7,36 +8,40 @@
     flex-direction: column;
     justify-content: flex-end;
     align-items: stretch;
-    gap: $sm;
-    transition: all .2s ease-in;
-}
+    gap: $xs;
+    padding-block: 10px;
+    position: relative;
 
-@media only screen and (max-width: 600px) {
-    .medium-panel {
-        padding: 10px;
+
+    @media only screen and (max-width: 768px) {
+        padding-inline: 4%;
+
+        &.with-details {
+            padding-inline: 2%;
+        }
+    }
+
+    @media only screen and (min-width: 768px) {
+        padding-inline: 6%;
+
+        &.with-details {
+            padding-inline: 3%;
+        }
+    }
+
+    @media only screen and (min-width: 992px) {
+        padding-inline: 10%;
+
+        &.with-details {
+            padding-inline: 5%;
+        }
+    }
+
+    @media only screen and (min-width: 1200px) {
+        padding-inline: 16%;
+
+        &.with-details {
+            padding-inline: 8%;
+        }
     }
 }
-
-@media only screen and (min-width: 600px) {
-    .medium-panel{
-        padding: 10px 5%;
-    }
-}
-
-@media only screen and (min-width: 768px){
-    .medium-panel{
-        padding: 10px 10%;
-    }
-}
-
-@media only screen and (min-width: 992px){
-    .medium-panel{
-        padding: 10px 15%;
-    }
-}
-@media only screen and (min-width: 1200px) {
-    .medium-panel {
-        padding: 10px 20%;
-    }
-}
-

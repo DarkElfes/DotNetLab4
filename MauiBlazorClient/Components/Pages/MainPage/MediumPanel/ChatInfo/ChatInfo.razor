@@ -1,0 +1,33 @@
+﻿@using static MauiBlazorClient.Components.Pages.MainPage.MediumPanel.MediumPanel
+
+
+<div class="chat-info">
+
+    @if (CurrentChat is GroupChatDTO groupChat)
+    {
+        <p>@groupChat.Users.Count members</p>
+    }
+    else if (CurrentChat is PersonalChatDTO personalChat &&
+    personalChat.Users.FirstOrDefault(u => !u.Equals(CurrentUser)) is UserDTO anotherUser)
+    {
+        <p class="@(anotherUser.IsOnline ? "online" : null)">
+            @(anotherUser.UserName + " is " + (anotherUser.IsOnline ? "online" : "offline"))
+        </p>
+    }
+
+    <Button @onclick="ChangeDetailsPanelState">@(ChatDetailsState.IsDetailsPanelShow ? "Hide details" : "Show details")</Button>
+</div>
+
+@code {
+    [CascadingParameter(Name = "CurrentChat")]
+    public BaseChatDTO? CurrentChat { get; set; }
+
+    [CascadingParameter(Name = "CurrentUser")]
+    public UserDTO? CurrentUser { get; set; }
+
+    [CascadingParameter(Name = "ChatDetailsState")]
+    public ChatDetailsState? ChatDetailsState { get; set; }
+
+    private void ChangeDetailsPanelState()
+        => ChatDetailsState.IsDetailsPanelShow = !ChatDetailsState.IsDetailsPanelShow;
+}

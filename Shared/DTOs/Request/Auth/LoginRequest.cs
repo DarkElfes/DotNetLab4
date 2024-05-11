@@ -4,11 +4,11 @@ namespace Shared.DTOs.Request.Auth;
 
 public record LoginRequest
 {
+    [Required]
     [EmailAddress]
-    [Required]
-    public string? Email { get; set; }
+    public string Email { get; set; } = null!;
 
-    [DataType(DataType.Password)]
     [Required]
-    public string? Password { get; set; }
+    [DataType(DataType.Password)]
+    public string Password { get; set; } = null!;
 }

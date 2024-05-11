@@ -21,18 +21,18 @@ namespace Server.Services
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
                 SecurityAlgorithms.HmacSha256Signature);
 
-            List<Claim> claims = new()
-            {
+            List<Claim> claims =
+            [
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.UserName!),
                 new Claim(ClaimTypes.Email, user.Email!),
-            };
+            ];
 
             JwtSecurityToken jwtSecurityToken = new(
                 issuer: _jwtSettings.Issuer,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
                 audience: _jwtSettings.Audience,
                 claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryMinutes),
                 signingCredentials: signingCredentials
                 );
 

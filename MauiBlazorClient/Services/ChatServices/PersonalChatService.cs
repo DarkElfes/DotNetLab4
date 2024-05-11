@@ -5,9 +5,9 @@ using Shared.DTOs.Request.Chat;
 namespace MauiBlazorClient.Services.ChatServices;
 
 public class PersonalChatService(
-    IModalDialogService modalDialogService,
+    IDialogService dialogService,
     IConfiguration configuration
-    ) : BaseChatService<PersonalChatRequest>(modalDialogService, configuration), IPersonalChatService
+    ) : BaseChatService<PersonalChatRequest>(dialogService, configuration), IPersonalChatService
 {
     public override async Task ConnectAsync(string token)
     {
@@ -15,7 +15,7 @@ public class PersonalChatService(
             return;
 
         CreateBaseHubMethods();
-
+        
         await HubConnection!.StartAsync();
     }
 }

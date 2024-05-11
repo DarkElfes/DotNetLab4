@@ -1,12 +1,12 @@
 ﻿@using MauiBlazorClient.Components.Pages.MainPage.LeftPanel.ChatList.Chat;
 @using MauiBlazorClient.Components.Pages.MainPage.LeftPanel.ChatList.NewChatButton;
-@using MauiBlazorClient.Components.Global;
 
 @implements IAsyncDisposable;
 
-@inject IAuthenticationService AuthenticationService;
+@inject AuthService AuthService;
 @inject IAnimatedNavigationManager Navigation;
 @inject ChatManager ChatManager;
+@inject IDialogService DialogService;
 
 
 <div class="chat-list">
@@ -17,16 +17,16 @@
             <Chat CurrentChat="@chat" />
         }
     }
-    else if(Chats is not null)
+    else if (Chats is not null)
     {
         <p>You not have any chat</p>
     }
     else
     {
-        <Loader/>
+        <Loader />
     }
 
-    <NewChatButton/>
+    <NewChatButton />
 </div>
 
 
@@ -35,13 +35,17 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string? token = await AuthenticationService.GetTokenAsync();
-
-        if (string.IsNullOrWhiteSpace(token))
+        try
+        {
+            await ChatManager.ConnectAsync();
+            ChatManager.OnChatsChanged += UpdateChats;
+        }
+        catch
+        {
+            AuthService.Logout();
             await Navigation.NavigateToAsync("/auth");
-
-        await ChatManager.ConnectAsync(token!);
-        ChatManager.OnChatsChanged += UpdateChats;
+            DialogService.ShowNotification("Authentication timeout", "Authentication time exipred, login again.");
+        }
     }
 
     void UpdateChats(List<BaseChatDTO> chats)

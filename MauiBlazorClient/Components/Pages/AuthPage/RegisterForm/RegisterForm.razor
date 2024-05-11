@@ -1,6 +1,6 @@
 ﻿@using static MauiBlazorClient.Components.Pages.AuthPage.Auth;
 
-@inject IAuthenticationService AuthenticationService;
+@inject AuthService AuthService;
 @inject IAnimatedNavigationManager Navigation;
 
 
@@ -21,8 +21,8 @@
     </div>
 
     <div class="manager">
+        <Button Type="ButtonType.Submit">Register</Button>
         <Button OnClick="_ => AuthState.IsLogin = true">Have account</Button>
-        <Button type="submit">Register</Button>
     </div>
     <ErrorMessage Message="@_errorMessage" />
 </EditForm>
@@ -30,7 +30,7 @@
 
 @code {
     [CascadingParameter(Name = "AuthState")]
-    public AuthState? AuthState { get; set; }
+    public AuthState AuthState { get; set; } = null!;
 
     private RegisterRequest _inputModel = new();
     private string? _errorMessage;
@@ -41,9 +41,9 @@
         AuthState!.IsSubmitting = true;
         _errorMessage = string.Empty;
 
-        _errorMessage = await AuthenticationService.RegisterAsync(_inputModel);
+        (bool isSuccessfully, _errorMessage) = await AuthService.RegisterAsync(_inputModel);
 
-        if (string.IsNullOrEmpty(_errorMessage))
+        if (isSuccessfully)
             await Navigation.NavigateToAsync("/main");
 
         AuthState!.IsSubmitting = false;

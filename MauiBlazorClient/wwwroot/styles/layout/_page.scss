@@ -20,18 +20,21 @@ html {
 }
 
 
-*:hover
-*:-webkit-autofill:hover {
+button:hover,
+input:hover,
+input:-webkit-autofill:hover {
     @include hovered;
 }
 
-*:focus,
-*:-webkit-autofill:focus {
+button:focus,
+input:focus,
+input:-webkit-autofill:focus {
     @include focused;
 }
 
-*:disabled,
-*:-webkit-autofill:disabled {
+button:disabled,
+input:disabled,
+input:-webkit-autofill:disabled {
     @include disabled;
 }
 

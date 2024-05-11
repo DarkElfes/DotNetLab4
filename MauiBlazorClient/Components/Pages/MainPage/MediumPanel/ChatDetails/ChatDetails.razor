@@ -1,0 +1,14 @@
+﻿@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.ChatDetails.GroupChatDetails
+@using MauiBlazorClient.Components.Pages.MainPage.MediumPanel.ChatDetails.PersonalChatDetails
+
+
+<div class="chat-details-panel" >
+    @if(CurrentChat is PersonalChatDTO personalChat)
+    {
+        <PersonalChatDetails Chat="personalChat"/>
+    }
+    else if(CurrentChat is GroupChatDTO groupChat)
+    {
+        <GroupChatDetails Chat="groupChat"/>
+    }
+</div>

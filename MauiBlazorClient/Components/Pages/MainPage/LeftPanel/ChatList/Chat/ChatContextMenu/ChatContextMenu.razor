@@ -4,7 +4,7 @@
 <div>
     @if (Chat is GroupChatDTO groupChat)
     {
-        if (groupChat.OwnerUser == CurrentUser)
+        if (groupChat.Owner.Id == CurrentUser?.Id)
         {
             <button @onclick="async () => await GroupChatService.RemoveChatAsync(Chat.Id)">Remove Group</button>
         }

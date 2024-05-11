@@ -1,3 +1,6 @@
 ﻿namespace Shared.DTOs.Request.Chat;
 
-public record GroupChatRequest(string Name) : ChatRequest;
+public class GroupChatRequest : ChatRequest
+{
+    public string Name { get; set; } = null!;
+}

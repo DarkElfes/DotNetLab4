@@ -32,10 +32,10 @@
             await Task.Delay(300);
             _isEmergence = false;
 
-            _previousChatId = CurrentChat.Id;
+            _previousChatId = CurrentChat?.Id ?? 0;
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
-        => await JS.InvokeVoidAsync("setOnBottom", messageList);
+        => await JS.InvokeVoidAsync("scrollToBottom", messageList);
 }

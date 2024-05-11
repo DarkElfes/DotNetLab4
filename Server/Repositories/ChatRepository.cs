@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Server.Data;
+using Server.Models;
 using Server.Models.Chats;
 using Server.Repositories.IRepositories;
 
@@ -7,20 +8,30 @@ namespace Server.Repositories;
 
 public record ChatRepository<T>(
     ApplicationDbContext _db
-    ) : IRepository<T> where T : BaseChat
+    ) : IChatRepository<T> where T : BaseChat
 {
     public async Task<T?> GetByIdAsync(int id)
         => await _db.BaseChats
             .OfType<T>()
-            .Include(g => g.Users)
-            .Include(m => m.Messages)
-            .FirstOrDefaultAsync(g => g.Id == id);
+            .Include(c => c.Users)
+            .Include(c => c.Messages)
+            .FirstOrDefaultAsync(c => c.Id.Equals(id));
+
     public async Task<List<T>> GetAllAsync()
         => await _db.BaseChats
             .OfType<T>()
-            .Include(u => u.Users)
-            .Include(m => m.Messages)
+            .Include(c => c.Users)
+            .Include(c => c.Messages)
             .ToListAsync();
+
+    public async Task<List<T>> GetByUser(ApplicationUser user)
+        => await _db.BaseChats
+            .OfType<T>()
+            .Where(u => u.Users.Any(u => u.Equals(user)))
+            .Include(c => c.Users)
+            .Include(c => c.Messages)
+            .ToListAsync();
+
 
 
     public async Task<T> CreateAsync(T entity)

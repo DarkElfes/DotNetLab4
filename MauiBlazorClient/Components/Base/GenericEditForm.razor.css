@@ -1,0 +1,1 @@
+﻿div.form-wrapper{width:100%;flex:1 0 0}div.form-wrapper ::deep form{display:flex;flex-direction:column;justify-content:space-between;gap:20px;width:100%;height:100%;color:#9d74ff}div.form-wrapper ::deep form .buttons-manager{display:flex;justify-content:flex-end;gap:10px}
