@@ -66,7 +66,7 @@ public class PersonalChatHub(
         try
         {
             BaseChatDTO newChat = await _chatService.CreateChatAsync(chatRequest, await _userHelper.GetCurrentUserAsync(Context?.User));
-            await Clients.Caller.ReceiveChat(newChat);
+            newChat.Users.ForEach(async u => await Clients.User(u.Id).ReceiveChat(newChat));
         }
         catch (Exception ex)
         {
